@@ -23,6 +23,14 @@ jobs:
           echo "Current Path: ${{ steps.current-path.outputs.path }}"
           echo "Commit ID: ${{ github.sha }}"
 
+      - name: List files and folders
+        run: |
+          ls -R ${{ steps.current-path.outputs.path }}
+
+      - name: Fix permissions
+        run: |
+          sudo chown -R $USER:$(id -gn) ${{ steps.current-path.outputs.path }}
+
       - name: Run Docker scanner
         run: |
           COMMIT_ID=$(git rev-parse HEAD)
