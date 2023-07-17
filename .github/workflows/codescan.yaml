@@ -26,7 +26,9 @@ jobs:
       - name: Run Docker scanner
         run: |
           COMMIT_ID=$(git rev-parse HEAD)
-          docker run rohitcoder/code-security --path ${{ steps.current-path.outputs.path }} \
+          docker run \
+            -v ${{ steps.current-path.outputs.path }}:/tmp/app \
+            rohitcoder/code-security --path /tmp/app \
             --license-compliance --sast --sca --secret --license-compliance \
             --policy-url https://raw.githubusercontent.com/rohitcodergroww/cicd-policies/main/policy.yaml \
             --verbose --commit-id $COMMIT_ID
