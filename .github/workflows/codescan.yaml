@@ -1,0 +1,19 @@
+name: Docker Scanner
+
+on: [push]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run Docker scanner
+      run: |
+        COMMIT_ID=$(git rev-parse HEAD)
+        docker run rohitcoder/code-security --path https://github.com/appsecco/dvja \
+          --license-compliance --sast --sca --secret --license-compliance \
+          --policy-url https://raw.githubusercontent.com/rohitcodergroww/cicd-policies/main/policy.yaml \
+          --verbose --commit-id $COMMIT_ID
